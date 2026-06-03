@@ -20,6 +20,9 @@ def make_forecast(csv_path: str, days: int) -> dict:
     model.fit(df)
     future = model.make_future_dataframe(periods=days)
     forecast = model.predict(future)
+    # фильтр, только будущие даты
+    last_date = df['ds'].max()
+    future_forecast = forecast[forecast['ds'] > last_date]
     return {
         "dates": forecast['ds'].dt.strftime('%Y-%m-%d').tolist(),
         "values": forecast['yhat'].tolist()
