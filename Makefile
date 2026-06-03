@@ -1,7 +1,7 @@
 .PHONY: install run test docker-up docker-down docs
 
 install:
-	pip install -r requirements.txt
+	python3 -m pip install -r requirements.txt
 
 run:
 	uvicorn app.main:app --reload
