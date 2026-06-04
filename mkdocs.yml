@@ -1,7 +1,14 @@
 site_name: cryptocast
-docs_dir: docs
+theme:
+  name: material
+
+plugins:
+  - search
 
 markdown_extensions:
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed
-  - mermaid2
