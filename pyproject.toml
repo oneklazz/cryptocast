@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cryptocast"
+version = "0.1.0"
+description = "Cryptocurrency price forecasting service"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["app", "core"]
+omit = ["tests/*"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"

@@ -1,3 +1,6 @@
+PYTHON = python3
+PIP = pip3
+
 .PHONY: help install run test coverage build-lib publish-lib install-lib-local docs docker-up docker-down check clean
 
 help:
@@ -16,8 +19,8 @@ help:
 	  'clean                Remove generated artefacts'
 
 install:
-	pip3 install -r requirements.txt
-	pip3 install -e ./core
+	$(PIP) install -r requirements.txt
+	$(PIP) install -e ./core
 
 run:
 	uvicorn app.main:app --reload
@@ -29,13 +32,13 @@ coverage:
 	pytest tests/ --cov=core --cov=app --cov-report=term-missing
 
 build-lib:
-	cd core && python3 -m build
+	cd core && $(PYTHON) -m build
 
 publish-lib:
 	twine upload --repository testpypi core/dist/*
 
 install-lib-local:
-	pip3 install core/dist/cryptocast_core-0.1.0-py3-none-any.whl --force-reinstall
+	$(PIP) install core/dist/cryptocast_core-0.1.0-py3-none-any.whl --force-reinstall
 
 docs:
 	mkdocs build
