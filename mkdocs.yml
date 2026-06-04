@@ -1,2 +1,7 @@
 site_name: cryptocast
 docs_dir: docs
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - mermaid2
