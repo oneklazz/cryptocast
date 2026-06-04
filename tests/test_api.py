@@ -39,10 +39,7 @@ def test_predict_endpoint_returns_422_for_missing_fields():
 def test_predict_endpoint_returns_error_for_unknown_coin():
     """returns error status for a coin with no dataset file"""
     response = client.post("/predict", json={"coin": "FAKECOIN", "days": 5})
-    # Ожидаем любой код ошибки, но не 200
     assert response.status_code != 200
-    # Или конкретно 404, если хотите строго:
-    # assert response.status_code == 404
     assert "not found" in response.text.lower()
 
 
