@@ -13,6 +13,7 @@ class ForecastRequest(BaseModel):
 
 @app.post("/predict")
 async def predict(request: ForecastRequest):
+
     """
     возвращает прогноз цены для указанной криптовалюты
 
