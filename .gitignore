@@ -8,3 +8,9 @@ build/
 *.egg-info/
 site/
 .DS_Store
+core/dist/
+core/build/
+core/*.egg-info/
+site/
+.coverage
+coverage/
