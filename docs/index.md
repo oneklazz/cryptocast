@@ -19,7 +19,7 @@ pip install --index-url https://test.pypi.org/simple/ cryptocast
 ## Use-case диаграмма
 
 ```mermaid
-usecaseDiagram
+usecase-diagram
     actor User
     usecase "Request forecast" as UC1
     usecase "View forecast" as UC2
