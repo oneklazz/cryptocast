@@ -22,7 +22,10 @@ pip install --index-url https://test.pypi.org/simple/ cryptocast
 flowchart LR
     User -->|Request forecast| API
     API -->|Return forecast| User
+```
+## Sequence диаграмма
 
+```mermaid
 sequenceDiagram
     User->>API: POST /predict
     API->>Redis: check cache
