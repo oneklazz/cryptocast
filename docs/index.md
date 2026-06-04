@@ -17,14 +17,14 @@ pip install --index-url https://test.pypi.org/simple/ cryptocast
 ```
 
 ## Use-case диаграмма
-
+> Исходный файл: `docs/diagrams/use-case.mmd`
 ```mermaid
 flowchart LR
     User(User) -->|Request forecast| API(API)
     API -->|Return forecast| User
 ```
 ## Sequence диаграмма
-
+> Исходный файл: `docs/diagrams/sequence.mmd`
 ```mermaid
 sequenceDiagram
     User->>API: POST /predict
