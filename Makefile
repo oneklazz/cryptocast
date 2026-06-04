@@ -1,13 +1,44 @@
-.PHONY: install run test docker-up docker-down docs
+.PHONY: help install run test coverage build-lib publish-lib install-lib-local docs docker-up docker-down check clean
+
+help:
+	@printf '%s\n' \
+	  'install              Install all dependencies' \
+	  'run                  Run the FastAPI application' \
+	  'test                 Run all tests' \
+	  'coverage             Run tests and show coverage report' \
+	  'build-lib            Build the core package (dist/)' \
+	  'publish-lib          Publish core package to TestPyPI' \
+	  'install-lib-local    Install locally built core package' \
+	  'docs                 Build MkDocs documentation' \
+	  'docker-up            Build and start containers' \
+	  'docker-down          Stop and remove containers' \
+	  'check                Run tests + build-lib + docs' \
+	  'clean                Remove generated artefacts'
 
 install:
-	python3 -m pip install -r requirements.txt
+	pip3 install -r requirements.txt
+	pip3 install -e ./core
 
 run:
 	uvicorn app.main:app --reload
 
 test:
-	pytest
+	pytest tests/ -v
+
+coverage:
+	pytest tests/ --cov=core --cov=app --cov-report=term-missing
+
+build-lib:
+	cd core && python3 -m build
+
+publish-lib:
+	twine upload --repository testpypi core/dist/*
+
+install-lib-local:
+	pip3 install core/dist/cryptocast_core-0.1.0-py3-none-any.whl --force-reinstall
+
+docs:
+	mkdocs build
 
 docker-up:
 	docker-compose up --build
@@ -15,5 +46,9 @@ docker-up:
 docker-down:
 	docker-compose down
 
-docs:
-	mkdocs build
+check: test build-lib docs
+
+clean:
+	rm -rf core/dist core/build site .coverage coverage/
+	find . -type d -name __pycache__ -exec rm -rf {} +
+	find . -type d -name "*.egg-info" -exec rm -rf {} +
