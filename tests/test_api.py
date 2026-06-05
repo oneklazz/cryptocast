@@ -32,18 +32,16 @@ def test_predict_endpoint_coin_matches_request():
 
 def test_predict_endpoint_returns_422_for_missing_fields():
     """returns 422 when request body is missing required fields"""
-    response = client.post("/predict", json={})
+    response = clsient.post("/predict", json={})
     assert response.status_code == 422
 
 
 def test_predict_endpoint_returns_error_for_unknown_coin():
-    """returns error status for a coin with no dataset file"""
+    """returns 404 for a coin with no dataset file"""
     response = client.post("/predict", json={"coin": "FAKECOIN", "days": 5})
-    assert response.status_code != 200
-    assert "not found" in response.text.lower()
-
+    assert response.status_code == 404
 
 def test_predict_endpoint_returns_error_for_zero_days():
-    """returns error when days is zero"""
+    """returns 400 when days is zero"""
     response = client.post("/predict", json={"coin": "XRP", "days": 0})
-    assert response.status_code in (400, 422, 404, 500)
+    assert response.status_code == 400
