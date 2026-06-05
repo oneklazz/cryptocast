@@ -1,13 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from core.forecast import make_forecast
+from fastapi.responses import RedirectResponse
 import os
 
 app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "cryptocast API", "docs": "/docs"}
+    return RedirectResponse(url="/docs")
 
 class ForecastRequest(BaseModel):
     """
