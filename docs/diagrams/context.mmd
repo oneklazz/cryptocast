@@ -1,0 +1,16 @@
+flowchart LR
+    User["Аналитик"]
+    Dev["Разработчик"]
+    App["cryptocast\nFastAPI"]
+    Core["cryptocast-core\nбиблиотека"]
+    Redis[("Redis\nкэш")]
+    Dataset[("dataset/\nCSV файлы")]
+    TestPyPI["TestPyPI\nреестр пакетов"]
+
+    User -->|"POST /predict"| App
+    Dev -->|"make run"| App
+    Dev -->|"make build-lib\nmake publish-lib"| TestPyPI
+    App -->|"make_forecast()"| Core
+    App <-->|"кэш прогнозов"| Redis
+    Core -->|"read_csv()"| Dataset
+    TestPyPI -->|"pip install"| Core
