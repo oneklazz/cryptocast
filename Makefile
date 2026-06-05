@@ -38,7 +38,7 @@ publish-lib:
 	twine upload --repository testpypi core/dist/*
 
 install-lib-local:
-	$(PIP) install core/dist/cryptocast_core-0.1.0-py3-none-any.whl --force-reinstall
+	$(PIP) install core/dist/cryptocast_core-0.2.0-py3-none-any.whl --force-reinstall
 
 docs:
 	mkdocs build
