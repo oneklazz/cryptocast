@@ -5,6 +5,10 @@ import os
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return {"message": "cryptocast API", "docs": "/docs"}
+
 class ForecastRequest(BaseModel):
     """
     модель запроса для эндпоинта /predict.
