@@ -32,7 +32,7 @@ def test_predict_endpoint_coin_matches_request():
 
 def test_predict_endpoint_returns_422_for_missing_fields():
     """returns 422 when request body is missing required fields"""
-    response = clsient.post("/predict", json={})
+    response = client.post("/predict", json={})
     assert response.status_code == 422
 
 
