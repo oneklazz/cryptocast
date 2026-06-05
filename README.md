@@ -21,7 +21,7 @@ make install
 make run
 ```
 
-Приложение доступно по адресу: http://localhost:8000
+Приложение доступно по адресу: http://localhost:8000/docs
 
 ### Запрос прогноза
 
