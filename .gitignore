@@ -13,4 +13,4 @@ core/build/
 core/*.egg-info/
 site/
 .coverage
-coverage/
+coverage/.idea/
