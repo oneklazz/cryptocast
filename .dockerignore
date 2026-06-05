@@ -1,0 +1,15 @@
+.git
+.github
+.venv
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.coverage
+coverage/
+core/dist/
+core/build/
+site/
+.env
+.DS_Store
+.idea/
