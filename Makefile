@@ -20,7 +20,7 @@ help:
 
 install:
 	$(PIP) install -r requirements.txt
-	$(PIP) install -e ./core
+	$(PIP) install -e ./packages
 
 run:
 	uvicorn app.main:app --reload
@@ -32,13 +32,13 @@ coverage:
 	pytest tests/ --cov=core --cov=app --cov-report=term-missing
 
 build-lib:
-	cd core && $(PYTHON) -m build
+	cd packages && $(PYTHON) -m build
 
 publish-lib:
-	twine upload --repository testpypi core/dist/*
+	twine upload --repository testpypi packages/dist/*
 
 install-lib-local:
-	$(PIP) install core/dist/cryptocast_core-0.2.0-py3-none-any.whl --force-reinstall
+	$(PIP) install packages/dist/*.whl --force-reinstall
 
 docs:
 	mkdocs build
@@ -52,6 +52,6 @@ docker-down:
 check: test build-lib docs
 
 clean:
-	rm -rf core/dist core/build site .coverage coverage/
+	rm -rf packages/dist packages/build site .coverage coverage/
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type d -name "*.egg-info" -exec rm -rf {} +
