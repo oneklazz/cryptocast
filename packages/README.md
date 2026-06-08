@@ -22,7 +22,7 @@ pip install -i https://test.pypi.org/simple/ cryptocast-core
 ### Локально
 
 ```bash
-git clone https://github.com/oneklazz/cryptocast.git
+git clone https://github.com/onek1azz/cryptocast.git
 cd cryptocast/core
 pip install -e .
 ```

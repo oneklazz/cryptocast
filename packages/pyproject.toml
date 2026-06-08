@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/oneklazz/cryptocast"
+Homepage = "https://github.com/onek1azz/cryptocast"
 
 [tool.hatch.build.targets.wheel]
 packages = ["core"]
