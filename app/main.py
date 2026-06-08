@@ -1,63 +1,56 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from core.forecast import make_forecast
-from fastapi.responses import RedirectResponse
+import json
 import os
 
+import redis
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
+from pydantic import BaseModel
+
+from core.forecast import make_forecast
+
 app = FastAPI()
+
+redis_client = redis.Redis(
+    host=os.getenv("REDIS_HOST", "localhost"),
+    port=int(os.getenv("REDIS_PORT", 6379)),
+    decode_responses=True
+)
 
 @app.get("/")
 async def root():
     return RedirectResponse(url="/docs")
 
 class ForecastRequest(BaseModel):
-    """
-    модель запроса для эндпоинта /predict.
-    """
     coin: str
     days: int
 
 @app.post("/predict")
 async def predict(request: ForecastRequest):
-    """
-    возвращает прогноз цены для указанной криптовалюты
-
-    Args:
-        request (ForecastRequest): тело запроса с полями coin и days
-
-    Returns:
-        dict: прогноз с полями coin, days, forecast
-
-    Raises:
-        HTTPException: 404 если файл с данными не найден
-        HTTPException: 400 если days <= 0
-    """
     csv_path = f"dataset/coin_{request.coin}.csv"
-    
-    # Проверяем существование файла перед вызовом forecast
+
     if not os.path.exists(csv_path):
-        raise HTTPException(
-            status_code=404,
-            detail=f"Data for coin '{request.coin}' not found"
-        )
-    
-    # Проверяем days > 0 (хотя это также проверяется в forecast, но лучше вернуть понятную ошибку)
+        raise HTTPException(status_code=404, detail=f"Data for coin '{request.coin}' not found")
+
     if request.days <= 0:
-        raise HTTPException(
-            status_code=400,
-            detail="days must be positive"
-        )
-    
+        raise HTTPException(status_code=400, detail="days must be positive")
+
+    cache_key = f"{request.coin}:{request.days}"
+
+    try:
+        cached = redis_client.get(cache_key)
+        if cached:
+            return {"coin": request.coin, "days": request.days, "forecast": json.loads(cached), "cached": True}
+    except redis.RedisError:
+        pass
+
     try:
         result = make_forecast(csv_path, request.days)
-        return {
-            "coin": request.coin,
-            "days": request.days,
-            "forecast": result
-        }
+        try:
+            redis_client.setex(cache_key, 3600, json.dumps(result))
+        except redis.RedisError:
+            pass
+        return {"coin": request.coin, "days": request.days, "forecast": result}
     except ValueError as e:
-        # Дополнительная обработка других ValueError из forecast
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        # Любые другие ошибки — 500
         raise HTTPException(status_code=500, detail=f"Internal error: {str(e)}")
