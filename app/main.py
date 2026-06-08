@@ -46,7 +46,7 @@ async def predict(request: ForecastRequest):
     try:
         result = make_forecast(csv_path, request.days)
         try:
-            redis_client.setex(cache_key, 3600, json.dumps(result))
+            redis_client.set(cache_key, json.dumps(result), ex=3600)
         except redis.RedisError:
             pass
         return {"coin": request.coin, "days": request.days, "forecast": result}
